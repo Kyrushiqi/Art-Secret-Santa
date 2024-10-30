@@ -25,7 +25,6 @@ client.on("message", msg => {
     }
 });
 
-console.log(process.env.TOKEN); // console.log(procgitess.env.TOKEN); I think you meant "process here"
+console.log(process.env.TOKEN);
 
-client.login(process.env.DISCORD_TOKEN);
 // client.login(process.env.TOKEN)
