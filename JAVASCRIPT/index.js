@@ -1,19 +1,23 @@
 // Initializes environment (.env)
-import dotenv from 'dotenv'
-dotenv.config()
-
-import { Client } from 'discord.js';
-
-const client = new Client({
+require('dotenv').config();
+const Discord = require("discord.js");
+const client = new Discord.Client({
     intents: [
-        GatewayIntentBits.Guilds,
-        GatewayIntentBits.GuildMessages,
-        GatewayIntentBits.GuildMembers,
-        GatewayIntentBits.DirectMessages
-    ],
+        Discord.GatewayIntentBits.Guilds,
+        Discord.GatewayIntentBits.GuildMessages,
+        Discord.GatewayIntentBits.MessageContent,
+        Discord.GatewayIntentBits.GuildMembers,
+        //Add more permission (intents) here
+    ]
 });
 
+
 client.login(process.env.DISCORD_TOKEN);
+
+//Discord bot logs on
+client.on("ready", () => {
+    console.log(`Logged in as ${client.user.tag}`);
+});
 
 client.on("messageCreate", async (message) => {
     console.log(message)
