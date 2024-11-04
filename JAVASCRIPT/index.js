@@ -14,6 +14,8 @@ const client = new Discord.Client({
     ]
 });
 
+//Import embeds
+const {HelpEmbed} = require('../Embeds/help.js');
 
 //PATHS
 const parentFile = __dirname;
@@ -34,13 +36,29 @@ client.on("messageCreate", async (message) => {
     }
 });
 
+
+
+
+///////////////////////////////////////////////////////
+            //Start of commands (temp setup)
+///////////////////////////////////////////////////////
+
+client.on("messageCreate", async (message) => {
+    if(message.author.bot) return;
+
+    if (message.content === '!help') {
+        message.reply({embeds : [HelpEmbed()]});
+    }
+});
+
+
 //Start Secrete Santa for the year
 client.on("messageCreate", async (message) => {
     // console.log(message);
 
     if(message.author.bot) return;
 
-    if(message.content.toLowerCase() === "!startSS") {
+    if(message.content === "!startSS") {
         const currYear = new Date().getFullYear();
         
        const  filePath = path.join(SSFielPath, `/${currYear}`, `/Roaster${currYear}.json`);
@@ -96,7 +114,7 @@ client.on("messageCreate", async (message) => {
                         var key = message.author.displayName;
                         if(roaster.hasOwnProperty(key)) {
                             // console.log(`${key} is in the system`);
-                            response.reply(`You are already in the system as ${key}`);
+                            response.reply(`You are already in the system as ${key}, but thanks for making sure you registered!`);
                         } else {
                             //Keeping track of the state of the json file.
                             console.log("Before Adding data",JSON.stringify(roaster, null, 4));
