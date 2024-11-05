@@ -16,6 +16,7 @@ const client = new Discord.Client({
 
 //Import embeds
 const {HelpEmbed} = require('../Embeds/help.js');
+const {JoinSSEmbed} = require('../Embeds/JoinSS.js');
 
 //PATHS
 const parentFile = __dirname;
@@ -92,12 +93,13 @@ client.on("messageCreate", async (message) => {
     const currYear = d.getFullYear();
     const filePath = path.join(SSFielPath, `/${currYear}`, `/Roaster${currYear}.json`);
 
-    if(message.content === "!joinSS") {
+    if(message.content === "!JoinSS") {
         const data = await readFile(filePath);
         let roaster = JSON.parse(data);
-        console.log(roaster);
+        // console.log(roaster);
 
-        message.reply(`Would you like to join Secret Santa for ${new Date().getFullYear()}?`);
+        message.reply({embeds : [JoinSSEmbed()]});
+        // message.reply(`Would you like to join Secret Santa for ${new Date().getFullYear()}?`);
 
         const filter = response => {
             return response.author.id == message.author.id;
