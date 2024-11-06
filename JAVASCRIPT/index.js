@@ -16,7 +16,7 @@ const client = new Discord.Client({
 
 //Import embeds
 const {HelpEmbed} = require('../Embeds/help.js');
-const {JoinSSEmbed} = require('../Embeds/JoinSS.js');
+const {JoinSSEmbed} = require('../Embeds/joinSS.js');
 
 //PATHS
 const parentFile = __dirname;
