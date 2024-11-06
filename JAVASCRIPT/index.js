@@ -20,7 +20,7 @@ const {JoinSSEmbed} = require('../Embeds/JoinSS.js');
 
 //PATHS
 const parentFile = __dirname;
-const SSFielPath = path.join(parentFile, "..", "/SecretSantaFiles")
+const SSFielPath = path.join(parentFile, "..", "/SantaFiles")
 
 client.login(process.env.DISCORD_TOKEN);
 
