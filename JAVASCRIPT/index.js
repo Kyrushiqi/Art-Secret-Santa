@@ -53,7 +53,7 @@ client.on("messageCreate", async (message) => {
 });
 
 
-//Start Secrete Santa for the year
+//Start Secret Santa for the year
 client.on("messageCreate", async (message) => {
     // console.log(message);
 
@@ -82,7 +82,7 @@ client.on("messageCreate", async (message) => {
 })
 
 
-//Adding people into the Secrete Santa roaster
+//Adding people into the Secret Santa roaster
 client.on("messageCreate", async (message) => {
     // console.log(message)
     if(message.author.bot) {
