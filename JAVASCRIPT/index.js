@@ -121,9 +121,7 @@ client.on("messageCreate", async (message) => {
                             //Keeping track of the state of the json file.
                             console.log("Before Adding data",JSON.stringify(roaster, null, 4));
                             
-                            
-                            console.log(`${key} is not in the system`);                            
-                            response.reply(`Couldnt find ${key} in the system`);
+                            console.log(`${key} is not in the system`);          
 
                             //Creating the new user int the json file
                             const newUser = {
@@ -137,8 +135,8 @@ client.on("messageCreate", async (message) => {
                             const jsonString = JSON.stringify(roaster);
                             fs.writeFileSync(filePath, jsonString, 'utf-8', (err) => {
                                 if(err) throw err;
-                                response.reply(`Congrats ${message.author.displayName}! You've been added into the secret santa roaster for ${currYear}`);
                             });
+                            response.reply(`Congrats ${message.author.displayName}! You've been added into the secret santa roaster for ${currYear}`);
 
                             //Updates and tracks how the file looks (prints out the json file)
                             const update_data = fs.readFileSync(filePath);
