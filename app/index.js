@@ -18,6 +18,9 @@ const client = new Discord.Client({
 const {HelpEmbed} = require('../Embeds/help.js');
 const {JoinSSEmbed} = require('../Embeds/joinSS.js');
 
+//Import Commands
+const {JoinSS} = require('../JAVASCRIPT/Commands.js');
+
 //PATHS
 const parentFile = __dirname;
 const SSFielPath = path.join(parentFile, "..", "/SantaFiles")
@@ -92,74 +95,9 @@ client.on("messageCreate", async (message) => {
     const d = new Date();
     const currYear = d.getFullYear();
     const filePath = path.join(SSFielPath, `/${currYear}`, `/Roaster${currYear}.json`);
-
+    
     if(message.content === "!JoinSS") {
-        const data = await readFile(filePath);
-        let roaster = JSON.parse(data);
-        // console.log(roaster);
-
-        message.reply({embeds : [JoinSSEmbed()]});
-        // message.reply(`Would you like to join Secret Santa for ${new Date().getFullYear()}?`);
-
-        const filter = response => {
-            return response.author.id == message.author.id;
-        };
-
-        const collector = message.channel.createMessageCollector({filter, max : 1, time : 15000 });
-
-        collector.on('collect', response => {
-            if(response.author.bot) return;
-
-            if(response.content === "!yes") {
-                if(fs.existsSync(filePath)) {
-                    try {
-                        var key = message.author.displayName;
-                        if(roaster.hasOwnProperty(key)) {
-                            // console.log(`${key} is in the system`);
-                            response.reply(`You are already in the system as ${key}, but thanks for making sure you registered!`);
-                        } else {
-                            //Keeping track of the state of the json file.
-                            console.log("Before Adding data",JSON.stringify(roaster, null, 4));
-                            
-                            console.log(`${key} is not in the system`);          
-
-                            //Creating the new user int the json file
-                            const newUser = {
-                                "id" : [message.author.id],
-                                "joined" : d.toDateString(),
-                            }
-
-                            //Add new User to the JSON File
-                            roaster[key] = newUser;
-
-                            const jsonString = JSON.stringify(roaster);
-                            fs.writeFileSync(filePath, jsonString, 'utf-8', (err) => {
-                                if(err) throw err;
-                            });
-                            response.reply(`Congrats ${message.author.displayName}! You've been added into the secret santa roaster for ${currYear}`);
-
-                            //Updates and tracks how the file looks (prints out the json file)
-                            const update_data = fs.readFileSync(filePath);
-                            const updated_jsonData = JSON.parse(update_data);
-                            console.log("After Adding data",JSON.stringify(updated_jsonData, null, 4));
-                        }
-                    } catch (e) {
-                        console.error("Error reading file: ", e);
-                    }
-                } else {
-                    message.reply("Current roaster has not been started, please wait for an admin to start it.");
-                }
-            } else if(response.content === "!no") {
-                response.reply("No problem, have a great day without santa");
-            }
-        })
-
-        //What the bot does if the person doesn't respond
-        collector.on('end', collected => {
-            if(collected.size === 0) {
-                message.channel.send(`Thanks for wasting my time ${message.author}`);
-            }
-        })
+        JoinSS(filePath, message);
     }
 });
 
@@ -168,6 +106,7 @@ async function readFile(filePath) {
         const data = await fs.promises.readFile(filePath, 'utf8');
         return data;
     } catch (err) {
-        console.log("Error reading file info.");
+        console.log("Error reading file info.")
+        console.error(err);
     }
 }
