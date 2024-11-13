@@ -16,10 +16,11 @@ const client = new Discord.Client({
 
 //Import embeds
 const {HelpEmbed} = require('../Embeds/help.js');
+const {JoinSSEmbed} = require('../Embeds/joinSS.js');
 
 //PATHS
 const parentFile = __dirname;
-const SSFielPath = path.join(parentFile, "..", "/SecretSantaFiles")
+const SSFielPath = path.join(parentFile, "..", "/SantaFiles")
 
 client.login(process.env.DISCORD_TOKEN);
 
@@ -52,7 +53,7 @@ client.on("messageCreate", async (message) => {
 });
 
 
-//Start Secrete Santa for the year
+//Start Secret Santa for the year
 client.on("messageCreate", async (message) => {
     // console.log(message);
 
@@ -81,7 +82,7 @@ client.on("messageCreate", async (message) => {
 })
 
 
-//Adding people into the Secrete Santa roaster
+//Adding people into the Secret Santa roaster
 client.on("messageCreate", async (message) => {
     // console.log(message)
     if(message.author.bot) {
@@ -92,12 +93,13 @@ client.on("messageCreate", async (message) => {
     const currYear = d.getFullYear();
     const filePath = path.join(SSFielPath, `/${currYear}`, `/Roaster${currYear}.json`);
 
-    if(message.content === "!joinSS") {
+    if(message.content === "!JoinSS") {
         const data = await readFile(filePath);
         let roaster = JSON.parse(data);
-        console.log(roaster);
+        // console.log(roaster);
 
-        message.reply(`Would you like to join Secret Santa for ${new Date().getFullYear()}?`);
+        message.reply({embeds : [JoinSSEmbed()]});
+        // message.reply(`Would you like to join Secret Santa for ${new Date().getFullYear()}?`);
 
         const filter = response => {
             return response.author.id == message.author.id;
@@ -119,9 +121,7 @@ client.on("messageCreate", async (message) => {
                             //Keeping track of the state of the json file.
                             console.log("Before Adding data",JSON.stringify(roaster, null, 4));
                             
-                            
-                            console.log(`${key} is not in the system`);                            
-                            response.reply(`Couldnt find ${key} in the system`);
+                            console.log(`${key} is not in the system`);          
 
                             //Creating the new user int the json file
                             const newUser = {
@@ -135,8 +135,8 @@ client.on("messageCreate", async (message) => {
                             const jsonString = JSON.stringify(roaster);
                             fs.writeFileSync(filePath, jsonString, 'utf-8', (err) => {
                                 if(err) throw err;
-                                response.reply(`Congrats ${message.author.displayName}! You've been added into the secret santa roaster for ${currYear}`);
                             });
+                            response.reply(`Congrats ${message.author.displayName}! You've been added into the secret santa roaster for ${currYear}`);
 
                             //Updates and tracks how the file looks (prints out the json file)
                             const update_data = fs.readFileSync(filePath);
