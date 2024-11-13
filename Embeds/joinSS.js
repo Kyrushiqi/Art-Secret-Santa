@@ -2,7 +2,7 @@
 const { EmbedBuilder } = require('discord.js');
 const date = new Date();
 
-let currYear = date.getFullYear;
+let currYear = date.getFullYear();
 
 //Assets
 const cryingCatPic = 'https://www.shutterstock.com/shutterstock/photos/2415076223/display_1500/stock-vector-computer-cat-animal-meme-pixel-art-2415076223.jpg';
@@ -21,7 +21,7 @@ module.exports = {
 			.setThumbnail(cryingCatPic)
 			.addFields(
 				{ name: 'Thanks for chosing Karina\'s Secrete Santa Bot', value: `Please follow the steps below to move forward.`},
-				{ name: `To Join for ${currYear}`, value: `Please type "!yes"`},
+				{ name: `To Join For ${currYear}`, value: `Please type "!yes"`},
 				{ name: 'To Reject', value: `Please type "!no"`},
 			)
 			.setTimestamp()
@@ -35,8 +35,9 @@ module.exports = {
             .setURL(youtubeLink)
             .setAuthor({name: 'Secret Santa Bot', iconURL: sadCatPic, url: youtubeLink})
             .setThumbnail(cryingCatPic)
-            .addFields({name: 'Congrats', value: 'You\'ve been accepted into the program! Have fun drawing and best of luck winning!'})
+            .addFields({name: `Congrats!!!`, value: `You\'ve been accepted into the program for ${currYear}!\nHave fun drawing and best of luck winning!`})
             .setTimestamp();
+        return embed
     },
 
     JoinYesEmbed_AlreadyExists() {
@@ -48,6 +49,7 @@ module.exports = {
             .setThumbnail(cryingCatPic)
             .addFields({name: 'You\'re doing great!', value: 'It seems like you\'re already in the systen!, Best of luck!'})
             .setTimestamp();
+        return embed
     },
 
     //Need to finish this
@@ -60,5 +62,6 @@ module.exports = {
             .setThumbnail(cryingCatPic)
             .addFields({name: 'You\'re doing great!', value: 'It seems like you\'re already in the systen!, Best of luck!'})
             .setTimestamp();
+            return embed
     }
 };
