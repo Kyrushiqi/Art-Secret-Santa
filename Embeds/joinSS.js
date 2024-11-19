@@ -47,12 +47,11 @@ module.exports = {
             .setURL(youtubeLink)
             .setAuthor({name: 'Secret Santa Bot', iconURL: sadCatPic, url: youtubeLink})
             .setThumbnail(cryingCatPic)
-            .addFields({name: 'You\'re doing great!', value: 'It seems like you\'re already in the systen!, Best of luck!'})
+            .addFields({name: 'You\'re doing great!', value: 'It seems like you\'re already in the system!, Best of luck!'})
             .setTimestamp();
         return embed
     },
 
-    //Need to finish this
     JoinNoEmbed() {
         const embed = new EmbedBuilder()
             .setColor(0x0099FF)
@@ -60,7 +59,7 @@ module.exports = {
             .setURL(youtubeLink)
             .setAuthor({name: 'Secret Santa Bot', iconURL: sadCatPic, url: youtubeLink})
             .setThumbnail(cryingCatPic)
-            .addFields({name: 'You\'re doing great!', value: 'It seems like you\'re already in the systen!, Best of luck!'})
+            .addFields({name: 'Look who\'s wasting my time', value: 'Can\'t beleive I let you waste Santa\'s time like that!'})
             .setTimestamp();
             return embed
     }
