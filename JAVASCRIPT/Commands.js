@@ -11,6 +11,7 @@ const client = new Discord.Client({
 });
 
 const d = new Date();
+currYear = d.getFullYear();
 
 //Export Commands
 module.exports = {JoinSS}
@@ -18,17 +19,17 @@ module.exports = {JoinSS}
 
 //ImportEmbeds
 const {
-    JoinSSEmbed, JoinYesEmbed_Added, JoinYesEmbed_AlreadyExists
+    JoinSSEmbed, JoinYesEmbed_Added, JoinYesEmbed_AlreadyExists, JoinNoEmbed
 } = require('../Embeds/joinSS');
 
+
+
+//Register the user for the current years Secret Santa
 async function JoinSS(filePath, message) {
-    console.log(filePath)
     const data = await readFile(filePath);
     let roaster = JSON.parse(data);
-    // console.log(roaster);
 
     message.reply({embeds : [JoinSSEmbed()]});
-    // message.reply(`Would you like to join Secret Santa for ${new Date().getFullYear()}?`);
 
     const filter = response => {
         return response.author.id == message.author.id;
@@ -49,8 +50,8 @@ async function JoinSS(filePath, message) {
                         response.reply({embeds : [JoinYesEmbed_AlreadyExists()]});
                     } else {
                         //Keeping track of the state of the json file.
-                        // For debugging
-                        // console.log("Before Adding data",JSON.stringify(roaster, null, 4));
+                        //For debugging
+                        //console.log("Before Adding data",JSON.stringify(roaster, null, 4));
 
                         //Creating the new user in the json file
                         const newUser = {
@@ -72,7 +73,7 @@ async function JoinSS(filePath, message) {
                         const update_data = fs.readFileSync(filePath);
                         const updated_jsonData = JSON.parse(update_data);
                         //For debugging
-                        // console.log("After Adding data",JSON.stringify(updated_jsonData, null, 4));
+                        //console.log("After Adding data",JSON.stringify(updated_jsonData, null, 4));
                     }
                 } catch (e) {
                     console.error("Error reading file: ", e);
@@ -81,7 +82,7 @@ async function JoinSS(filePath, message) {
                 message.reply("Current roaster has not been started, please wait for an admin to start it.");
             }
         } else if(response.content === "!no") {
-            response.reply("No problem, have a great day without santa");
+            response.reply({embeds : [JoinNoEmbed()]});
         }
     })
 
