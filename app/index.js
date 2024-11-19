@@ -18,7 +18,7 @@ const client = new Discord.Client({
 const {HelpEmbed} = require('../Embeds/help.js');
 
 //Import Commands
-const {JoinSS, StartSS} = require('../JAVASCRIPT/Commands.js');
+const {JoinSS, StartSS, LeaveSS} = require('../JAVASCRIPT/Commands.js');
 
 
 //PATHS
@@ -77,5 +77,14 @@ client.on("messageCreate", async (message) => {
 
     if(message.content === "!JoinSS") {
         JoinSS(filePath, message);
+    }
+});
+
+//Opting out of the Secret Sanaa
+client.on("messageCreate", async (message) => {
+    if(message.author.bot) return;
+
+    if(message.content === "!LeaveSS") {
+        
     }
 });

@@ -23,7 +23,7 @@ currYear = d.getFullYear();
 
 
 //Export Commands
-module.exports = {JoinSS, StartSS}
+module.exports = {JoinSS, StartSS, LeaveSS}
 
 
 //ImportEmbeds
@@ -92,24 +92,6 @@ async function StartSS(message) {
         })
     });
 }
-
-//Check if roaster is active or not
-// 1 = No path to the year
-// 2 = No path to the roaster
-// 0 = All files are there
-function IsRoasterActive() {
-    if(!fs.existsSync(path.join(pathToSanta, `/${currYear}`)))
-        return 1;
-
-    let pathToRoaster = path.join(pathToSanta, `/${currYear}`)
-
-    if(!fs.existsSync(path.join(pathToRoaster, `/Roaster${currYear}.json`)))
-        return 2;
-
-    return 0;
-}
-
-
 
 
 //Register the user for the current years Secret Santa
@@ -182,6 +164,12 @@ async function JoinSS(filePath, message) {
     })
 }
 
+
+async function LeaveSS(message) {
+    message.reply('So you wanna leave the roaster? Dafuq\nReply !yes or yes and !no for no');
+}
+
+
 //Helper function
 async function readFile(filePath) {
     try {
@@ -191,4 +179,20 @@ async function readFile(filePath) {
         console.log("Error reading file info.")
         console.error(err);
     }
+}
+
+//Check if roaster is active or not (Helper function)
+// 1 = No path to the year
+// 2 = No path to the roaster
+// 0 = All files are there
+function IsRoasterActive() {
+    if(!fs.existsSync(path.join(pathToSanta, `/${currYear}`)))
+        return 1;
+
+    let pathToRoaster = path.join(pathToSanta, `/${currYear}`)
+
+    if(!fs.existsSync(path.join(pathToRoaster, `/Roaster${currYear}.json`)))
+        return 2;
+
+    return 0;
 }
