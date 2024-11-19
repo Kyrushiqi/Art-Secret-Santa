@@ -32,21 +32,12 @@ client.on("ready", () => {
     console.log(`Logged in as ${client.user.tag}`);
 });
 
-client.on("messageCreate", async (message) => {
-    // console.log(message)
-
-    if (!message?.author.bot){
-        // message.author.send(`Echo ${message.content}`);
-    }
-});
-
-
-
 
 ///////////////////////////////////////////////////////
             //Start of commands (temp setup)
 ///////////////////////////////////////////////////////
 
+//List help commands
 client.on("messageCreate", async (message) => {
     if(message.author.bot) return;
 
