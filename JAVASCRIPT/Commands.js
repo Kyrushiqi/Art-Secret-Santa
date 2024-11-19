@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 const Discord = require("discord.js");
 const client = new Discord.Client({
     intents: [
@@ -10,17 +11,104 @@ const client = new Discord.Client({
     ]
 });
 
+//Paths
+let currPath = __dirname;
+let pathToSanta = path.join(currPath, '..', '/SantaFiles');
+
+
+
+//Date
 const d = new Date();
 currYear = d.getFullYear();
 
+
 //Export Commands
-module.exports = {JoinSS}
+module.exports = {JoinSS, StartSS}
 
 
 //ImportEmbeds
 const {
     JoinSSEmbed, JoinYesEmbed_Added, JoinYesEmbed_AlreadyExists, JoinNoEmbed
 } = require('../Embeds/joinSS');
+
+const {
+    StartSSEmbed, StartSSRoasterStartedEmbed, StartSSNoEmbed, StartSSErrorEmbed
+} = require('../Embeds/startSS')
+
+
+//Start a new Roaster for the new year
+async function StartSS(message) {   
+
+    //Check to see if the roaster is currently active or not
+    const res = IsRoasterActive();
+    
+    if(res === 0) {
+        message.reply(`The roaster for ${currYear} has already been started`);
+        return;
+    }
+    
+    message.reply({embeds : [StartSSEmbed()]});
+
+    //Setting up response replys
+    const filter = response => {
+        return response.author.id == message.author.id;
+    };
+
+    const collector = message.channel.createMessageCollector({filter, max : 1, time : 15000 });
+
+    collector.on('collect', response => {
+        if(response.author.bot) return;
+
+        if(res === 1){
+            if(response.content === '!yes') {
+                //Create a new folder and roaster
+                const fileName = `Roaster${currYear}.json`
+                fs.mkdirSync(path.join(pathToSanta, `/${currYear}`));
+                fs.appendFile(path.join(pathToSanta, `${currYear}`, `${fileName}`), '{}', (err) => {
+                    if(err) throw err;
+                    console.log(`${fileName} has been created`)
+                })
+                response.reply({embeds : [StartSSRoasterStartedEmbed()]});
+            }
+            if(response.content === '!no') {
+                response.reply({embeds : [StartSSNoEmbed()]});
+            }
+        }
+
+        if(res === 2) {
+            fs.appendFile(path.join(pathToSanta, `${currYear}`, `${fileName}`), '{}', (err) => {
+                if(err) throw err;
+                // console.log(`${fileName} has been created`)
+                response.reply({embeds : [StartSSRoasterStartedEmbed()]});
+            })
+            response.reply({embeds : [StartSSErrorEmbed()]});
+        }
+
+
+        collector.on('end', collected => {
+            if(collected.size === 0) {
+                message.channel.send(`Thanks for wasting my time ${message.author}`);
+            }
+        })
+    });
+}
+
+//Check if roaster is active or not
+// 1 = No path to the year
+// 2 = No path to the roaster
+// 0 = All files are there
+function IsRoasterActive() {
+    if(!fs.existsSync(path.join(pathToSanta, `/${currYear}`)))
+        return 1;
+
+    let pathToRoaster = path.join(pathToSanta, `/${currYear}`)
+
+    if(!fs.existsSync(path.join(pathToRoaster, `/Roaster${currYear}.json`)))
+        return 2;
+
+    return 0;
+}
+
 
 
 

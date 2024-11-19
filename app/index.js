@@ -16,14 +16,14 @@ const client = new Discord.Client({
 
 //Import embeds
 const {HelpEmbed} = require('../Embeds/help.js');
-const {JoinSSEmbed} = require('../Embeds/joinSS.js');
 
 //Import Commands
-const {JoinSS} = require('../JAVASCRIPT/Commands.js');
+const {JoinSS, StartSS} = require('../JAVASCRIPT/Commands.js');
+
 
 //PATHS
 const parentFile = __dirname;
-const SSFielPath = path.join(parentFile, "..", "/SantaFiles")
+const SSFilePath = path.join(parentFile, "..", "/SantaFiles")
 
 client.login(process.env.DISCORD_TOKEN);
 
@@ -53,25 +53,11 @@ client.on("messageCreate", async (message) => {
 
     if(message.author.bot) return;
 
-    if(message.content === "!startSS") {
-        const currYear = new Date().getFullYear();
-        
-       const  filePath = path.join(SSFielPath, `/${currYear}`, `/Roaster${currYear}.json`);
+    if(message.content === "!StartSS") {
 
-        //Check to see if fiel exits and if it needs to be created
-        if(fs.existsSync(filePath)) {
-            try {
-                const data = await readFile(filePath);
-                const users = JSON.parse(data);
-                console.log(users.id);
+        //Add checks for if user is admin or not
 
-            } catch (e) {
-                console.error("Error reading file: ", e);
-            }
-        } else {
-            message.reply("Current roaster has not been started, Would you like to start it?");
-        }
-
+        StartSS(message);
     }
 })
 
@@ -87,19 +73,9 @@ client.on("messageCreate", async (message) => {
     //Create check to see if roaster is started or not
     ////////////////////////////////
 
-    const filePath = path.join(SSFielPath, `/${currYear}`, `/Roaster${currYear}.json`);
+    const filePath = path.join(SSFilePath, `/${currYear}`, `/Roaster${currYear}.json`);
 
     if(message.content === "!JoinSS") {
         JoinSS(filePath, message);
     }
 });
-
-
-async function readFile(filePath) {
-    try {
-        const data = await fs.promises.readFile(filePath, 'utf8');
-        return data;
-    } catch (err) {
-        console.log("Error reading file info.");
-    }
-}
