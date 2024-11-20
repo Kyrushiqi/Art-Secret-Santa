@@ -34,6 +34,7 @@ const {
     StartSSEmbed, StartSSRoasterStartedEmbed, StartSSNoEmbed, StartSSErrorEmbed, StartSSExistsEmbed
 } = require('../Embeds/startSS');
 const { error } = require('console');
+const { connect } = require('http2');
 
 
 //Start a new Roaster for the new year
@@ -172,7 +173,7 @@ async function LeaveSS(message) {
         const res = await IsUserInRoaster(message);
         if(res == false) {
             //Put embed here
-            message.reply('You\'re not registered');\
+            message.reply('You\'re not registered');
             return;
         }
     } catch (e) {
@@ -187,9 +188,39 @@ async function LeaveSS(message) {
 
     const collector = message.channel.createMessageCollector({filter, max : 1, time : 15000 });
 
+    const roasterPath = GetPathToRoaster(currPath, currYear);
+    const dataJSON = await readFile(roasterPath);
+
     collector.on('collect', response => {
-       
+
+        if(response.content === '!yes') {
+            const data = JSON.parse(dataJSON);
+
+            const userToDelete = message.author.displayName;
+
+            delete data[userToDelete];
+
+            let updatedJson = JSON.stringify(data, null, 2);
+
+            fs.writeFileSync(roasterPath, updatedJson, 'utf-8')
+
+            //Replace with embed
+            response.reply('Congrats you\'re gay');
+        }
+
+        if(response.content === '!no') {
+            //Replace with embed
+            response.reply('Got it, not removing you');
+            return;
+        }
     });
+
+    //What the bot does if the person doesn't respond
+    collector.on('end', collected => {
+        if(collected.size === 0) {
+            message.channel.send(`Thanks for wasting my time ${message.author}`);
+        }
+    })
 }
 
 
@@ -235,11 +266,15 @@ async function IsUserInRoaster(message) {
     const data = JSON.parse(dataJson);
 
     for(const key of Object.keys(data)) {
-        console.log(`${key} -> ${message.author.displayName}`);
+        // console.log(`${key} -> ${message.author.displayName}`);
         if(key === message.author.displayName) {
             return true;
         }
     }
 
     return false;
+}
+
+function GetPathToRoaster(filepath, year) {
+    return path.join(filepath, '..', '/SantaFiles', `/${year}`, `/Roaster${year}.json`);
 }
