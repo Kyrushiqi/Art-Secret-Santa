@@ -16,7 +16,6 @@ let currPath = __dirname;
 let pathToSanta = path.join(currPath, '..', '/SantaFiles');
 
 
-
 //Date
 const d = new Date();
 currYear = d.getFullYear();
@@ -33,7 +32,8 @@ const {
 
 const {
     StartSSEmbed, StartSSRoasterStartedEmbed, StartSSNoEmbed, StartSSErrorEmbed, StartSSExistsEmbed
-} = require('../Embeds/startSS')
+} = require('../Embeds/startSS');
+const { error } = require('console');
 
 
 //Start a new Roaster for the new year
@@ -166,7 +166,30 @@ async function JoinSS(filePath, message) {
 
 
 async function LeaveSS(message) {
-    message.reply('So you wanna leave the roaster? Dafuq\nReply !yes or yes and !no for no');
+
+    //Check to see if user is in the system or not
+    try{
+        const res = await IsUserInRoaster(message);
+        if(res == false) {
+            //Put embed here
+            message.reply('You\'re not registered');\
+            return;
+        }
+    } catch (e) {
+        console.error(e);
+        return;
+    }
+
+    //Setting up response replys
+    const filter = response => {
+        return response.author.id == message.author.id;
+    };
+
+    const collector = message.channel.createMessageCollector({filter, max : 1, time : 15000 });
+
+    collector.on('collect', response => {
+       
+    });
 }
 
 
@@ -195,4 +218,28 @@ function IsRoasterActive() {
         return 2;
 
     return 0;
+}
+
+async function IsUserInRoaster(message) {
+    if(!fs.existsSync(path.join(pathToSanta, `/${currYear}`)))
+        throw new Error('File path does not exist in Santa directory');
+
+    let pathToRoaster = path.join(pathToSanta, `/${currYear}`)
+
+    if(!fs.existsSync(path.join(pathToRoaster, `/Roaster${currYear}.json`)))
+        throw new Error('Roaster does not exist');
+
+    let currPath = path.join(pathToRoaster, `/Roaster${currYear}.json`);
+
+    const dataJson = await readFile(currPath);
+    const data = JSON.parse(dataJson);
+
+    for(const key of Object.keys(data)) {
+        console.log(`${key} -> ${message.author.displayName}`);
+        if(key === message.author.displayName) {
+            return true;
+        }
+    }
+
+    return false;
 }
