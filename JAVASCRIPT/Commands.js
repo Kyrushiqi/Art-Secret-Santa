@@ -33,8 +33,10 @@ const {
 const {
     StartSSEmbed, StartSSRoasterStartedEmbed, StartSSNoEmbed, StartSSErrorEmbed, StartSSExistsEmbed
 } = require('../Embeds/startSS');
-const { error } = require('console');
-const { connect } = require('http2');
+
+const {
+    LeaveSSEmbed, LeaveSSYesEmbed, LeaveSSNOEmbed, LeaveSSExistsEmbed
+} = require('../Embeds/leaveSS');
 
 
 //Start a new Roaster for the new year
@@ -167,13 +169,11 @@ async function JoinSS(filePath, message) {
 
 
 async function LeaveSS(message) {
-
     //Check to see if user is in the system or not
     try{
         const res = await IsUserInRoaster(message);
         if(res == false) {
-            //Put embed here
-            message.reply('You\'re not registered');
+            message.reply({embeds : [LeaveSSExistsEmbed()]});
             return;
         }
     } catch (e) {
@@ -181,6 +181,8 @@ async function LeaveSS(message) {
         return;
     }
 
+    message.reply({embeds : [LeaveSSEmbed()]});
+    
     //Setting up response replys
     const filter = response => {
         return response.author.id == message.author.id;
@@ -205,12 +207,11 @@ async function LeaveSS(message) {
             fs.writeFileSync(roasterPath, updatedJson, 'utf-8')
 
             //Replace with embed
-            response.reply('Congrats you\'re gay');
+            response.reply({embeds : [LeaveSSYesEmbed()]});
         }
 
         if(response.content === '!no') {
-            //Replace with embed
-            response.reply('Got it, not removing you');
+            response.reply({embeds : [LeaveSSNOEmbed()]});
             return;
         }
     });
