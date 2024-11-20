@@ -32,7 +32,7 @@ const {
 } = require('../Embeds/joinSS');
 
 const {
-    StartSSEmbed, StartSSRoasterStartedEmbed, StartSSNoEmbed, StartSSErrorEmbed
+    StartSSEmbed, StartSSRoasterStartedEmbed, StartSSNoEmbed, StartSSErrorEmbed, StartSSExistsEmbed
 } = require('../Embeds/startSS')
 
 
@@ -43,7 +43,7 @@ async function StartSS(message) {
     const res = IsRoasterActive();
     
     if(res === 0) {
-        message.reply(`The roaster for ${currYear} has already been started`);
+        message.reply({embeds : [StartSSExistsEmbed()]});
         return;
     }
     

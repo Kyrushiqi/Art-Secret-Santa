@@ -70,4 +70,19 @@ module.exports = {
 			.setTimestamp()
 		return embed
     },
+	StartSSExistsEmbed() {
+        const embed = new EmbedBuilder()
+			.setColor(0x0099FF)
+			.setTitle('A Helping Hand')
+			.setURL(youtubeLink)
+			.setAuthor({ name: 'Secret Santa Bot', iconURL: sadCatPic, url: youtubeLink })
+			.setDescription('HO HO HOE')
+			.setThumbnail(cryingCatPic)
+			.addFields(
+				{ name: `Always nice to be redundant`, value: `The roaster has already started`}
+			)
+			.setTimestamp()
+		return embed
+    },
+
 };
