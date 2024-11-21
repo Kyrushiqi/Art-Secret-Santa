@@ -37,6 +37,7 @@ const {
 const {
     LeaveSSEmbed, LeaveSSYesEmbed, LeaveSSNOEmbed, LeaveSSExistsEmbed
 } = require('../Embeds/leaveSS');
+const { finished } = require('stream');
 
 
 //Start a new Roster for the new year
@@ -128,8 +129,8 @@ async function JoinSS(filePath, message) {
 
                         //Creating the new user in the json file
                         const newUser = {
-                            "id" : [message.author.id],
-                            "joined" : d.toDateString(),
+                            "id" : message.author.id,
+                            "joined" : GetCurrentDateAndTime(),
                         }
 
                         //Add new User to the JSON File
@@ -278,4 +279,15 @@ async function IsUserInRoster(message) {
 
 function GetPathToRoster(filepath, year) {
     return path.join(filepath, '..', '/SantaFiles', `/${year}`, `/Roster${year}.json`);
+}
+
+function GetCurrentDateAndTime() {
+    const year = d.getFullYear();
+    const month = d.getMonth();
+    const day = d.getDay();
+    const time = d.toLocaleTimeString("en-US", {timeZone: 'America/New_York'}).replace(/\s/g, "");
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+    const finishedDate = `${year}-${month}-${day}T${time}-${timezone}`;
+    return finishedDate;
 }

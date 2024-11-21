@@ -42,4 +42,9 @@ async function RandomizePeople() {
     }
 
     const users = [];
+
+    for(const key of Object.keys(data)) {
+        // users.push(message.author);
+        console.log(message.author);
+    }
 }
