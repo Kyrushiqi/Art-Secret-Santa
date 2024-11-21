@@ -21,13 +21,13 @@ module.exports = {
 			.setThumbnail(cryingCatPic)
 			.addFields(
 				{ name: 'LETS GOOOO NEW YEARR NEW SANTA', value: `Please follow the steps below to move forward.`},
-				{ name: `To start roaster for ${currYear}`, value: `Please type "!yes"`},
+				{ name: `To start roster for ${currYear}`, value: `Please type "!yes"`},
 				{ name: 'To reject', value: `Please type "!no"`},
 			)
 			.setTimestamp()
 		return embed
 	},
-    StartSSRoasterStartedEmbed() {
+    StartSSRosterStartedEmbed() {
         const embed = new EmbedBuilder()
 			.setColor(0x0099FF)
 			.setTitle('A Helping Hand')
@@ -36,7 +36,7 @@ module.exports = {
 			.setDescription('HO HO HOE')
 			.setThumbnail(cryingCatPic)
 			.addFields(
-				{ name: `SUCCESS`, value: `THE NEW ROASTER FOR ${currYear} HAS BEGUN`}
+				{ name: `SUCCESS`, value: `THE NEW ROSTER FOR ${currYear} HAS BEGUN`}
 			)
 			.setTimestamp()
 		return embed
@@ -50,7 +50,7 @@ module.exports = {
 			.setDescription('HO HO HOE')
 			.setThumbnail(cryingCatPic)
 			.addFields(
-				{ name: `No Problem`, value: `The roaster was not created`},
+				{ name: `No Problem`, value: `The roster was not created`},
 			)
 			.setTimestamp()
 		return embed
@@ -64,8 +64,8 @@ module.exports = {
 			.setDescription('HO HO HOE')
 			.setThumbnail(cryingCatPic)
 			.addFields(
-				{ name: `Oops`, value: `Seems like the folder was already there so we just added the roaster`},
-				{ name: `SUCCESS`, value: `THE NEW ROASTER FOR ${currYear} HAS BEGUN`},
+				{ name: `Oops`, value: `Seems like the folder was already there so we just added the roster`},
+				{ name: `SUCCESS`, value: `THE NEW ROSTER FOR ${currYear} HAS BEGUN`},
 			)
 			.setTimestamp()
 		return embed
@@ -79,7 +79,7 @@ module.exports = {
 			.setDescription('HO HO HOE')
 			.setThumbnail(cryingCatPic)
 			.addFields(
-				{ name: `Always nice to be redundant`, value: `The roaster has already started`}
+				{ name: `Always nice to be redundant`, value: `The roster has already started`}
 			)
 			.setTimestamp()
 		return embed

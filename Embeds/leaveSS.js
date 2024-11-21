@@ -36,7 +36,7 @@ module.exports = {
 			.setDescription('HO HO HOE')
 			.setThumbnail(cryingCatPic)
 			.addFields(
-				{ name: `Great to see you go`, value: `You've offically left the roaster for ${currYear}`}
+				{ name: `Great to see you go`, value: `You've offically left the roster for ${currYear}`}
 			)
 			.setTimestamp()
 		return embed

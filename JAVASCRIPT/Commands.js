@@ -31,7 +31,7 @@ const {
 } = require('../Embeds/joinSS');
 
 const {
-    StartSSEmbed, StartSSRoasterStartedEmbed, StartSSNoEmbed, StartSSErrorEmbed, StartSSExistsEmbed
+    StartSSEmbed, StartSSRosterStartedEmbed, StartSSNoEmbed, StartSSErrorEmbed, StartSSExistsEmbed
 } = require('../Embeds/startSS');
 
 const {
@@ -39,11 +39,11 @@ const {
 } = require('../Embeds/leaveSS');
 
 
-//Start a new Roaster for the new year
+//Start a new Roster for the new year
 async function StartSS(message) {   
 
-    //Check to see if the roaster is currently active or not
-    const res = IsRoasterActive();
+    //Check to see if the roster is currently active or not
+    const res = IsRosterActive();
     
     if(res === 0) {
         message.reply({embeds : [StartSSExistsEmbed()]});
@@ -64,14 +64,14 @@ async function StartSS(message) {
 
         if(res === 1){
             if(response.content === '!yes') {
-                //Create a new folder and roaster
-                const fileName = `Roaster${currYear}.json`
+                //Create a new folder and roster
+                const fileName = `Roster${currYear}.json`
                 fs.mkdirSync(path.join(pathToSanta, `/${currYear}`));
                 fs.appendFile(path.join(pathToSanta, `${currYear}`, `${fileName}`), '{}', (err) => {
                     if(err) throw err;
                     console.log(`${fileName} has been created`)
                 })
-                response.reply({embeds : [StartSSRoasterStartedEmbed()]});
+                response.reply({embeds : [StartSSRosterStartedEmbed()]});
             }
             if(response.content === '!no') {
                 response.reply({embeds : [StartSSNoEmbed()]});
@@ -82,7 +82,7 @@ async function StartSS(message) {
             fs.appendFile(path.join(pathToSanta, `${currYear}`, `${fileName}`), '{}', (err) => {
                 if(err) throw err;
                 // console.log(`${fileName} has been created`)
-                response.reply({embeds : [StartSSRoasterStartedEmbed()]});
+                response.reply({embeds : [StartSSRosterStartedEmbed()]});
             })
             response.reply({embeds : [StartSSErrorEmbed()]});
         }
@@ -100,7 +100,7 @@ async function StartSS(message) {
 //Register the user for the current years Secret Santa
 async function JoinSS(filePath, message) {
     const data = await readFile(filePath);
-    let roaster = JSON.parse(data);
+    let roster = JSON.parse(data);
 
     message.reply({embeds : [JoinSSEmbed()]});
 
@@ -118,13 +118,13 @@ async function JoinSS(filePath, message) {
             if(fs.existsSync(filePath)) {
                 try {
                     var key = message.author.displayName;
-                    if(roaster.hasOwnProperty(key)) {
+                    if(roster.hasOwnProperty(key)) {
                         // console.log(`${key} is in the system`);
                         response.reply({embeds : [JoinYesEmbed_AlreadyExists()]});
                     } else {
                         //Keeping track of the state of the json file.
                         //For debugging
-                        //console.log("Before Adding data",JSON.stringify(roaster, null, 4));
+                        //console.log("Before Adding data",JSON.stringify(roster, null, 4));
 
                         //Creating the new user in the json file
                         const newUser = {
@@ -133,9 +133,9 @@ async function JoinSS(filePath, message) {
                         }
 
                         //Add new User to the JSON File
-                        roaster[key] = newUser;
+                        roster[key] = newUser;
 
-                        const jsonString = JSON.stringify(roaster);
+                        const jsonString = JSON.stringify(roster);
                         fs.writeFileSync(filePath, jsonString, 'utf-8', (err) => {
                             if(err) throw err;
                         });
@@ -152,7 +152,7 @@ async function JoinSS(filePath, message) {
                     console.error("Error reading file: ", e);
                 }
             } else {
-                message.reply("Current roaster has not been started, please wait for an admin to start it.");
+                message.reply("Current roster has not been started, please wait for an admin to start it.");
             }
         } else if(response.content === "!no") {
             response.reply({embeds : [JoinNoEmbed()]});
@@ -171,7 +171,7 @@ async function JoinSS(filePath, message) {
 async function LeaveSS(message) {
     //Check to see if user is in the system or not
     try{
-        const res = await IsUserInRoaster(message);
+        const res = await IsUserInRoster(message);
         if(res == false) {
             message.reply({embeds : [LeaveSSExistsEmbed()]});
             return;
@@ -190,8 +190,8 @@ async function LeaveSS(message) {
 
     const collector = message.channel.createMessageCollector({filter, max : 1, time : 15000 });
 
-    const roasterPath = GetPathToRoaster(currPath, currYear);
-    const dataJSON = await readFile(roasterPath);
+    const rosterPath = GetPathToRoster(currPath, currYear);
+    const dataJSON = await readFile(rosterPath);
 
     collector.on('collect', response => {
 
@@ -204,7 +204,7 @@ async function LeaveSS(message) {
 
             let updatedJson = JSON.stringify(data, null, 2);
 
-            fs.writeFileSync(roasterPath, updatedJson, 'utf-8')
+            fs.writeFileSync(rosterPath, updatedJson, 'utf-8')
 
             //Replace with embed
             response.reply({embeds : [LeaveSSYesEmbed()]});
@@ -236,32 +236,32 @@ async function readFile(filePath) {
     }
 }
 
-//Check if roaster is active or not (Helper function)
+//Check if roster is active or not (Helper function)
 // 1 = No path to the year
-// 2 = No path to the roaster
+// 2 = No path to the roster
 // 0 = All files are there
-function IsRoasterActive() {
+function IsRosterActive() {
     if(!fs.existsSync(path.join(pathToSanta, `/${currYear}`)))
         return 1;
 
-    let pathToRoaster = path.join(pathToSanta, `/${currYear}`)
+    let pathToRoster = path.join(pathToSanta, `/${currYear}`)
 
-    if(!fs.existsSync(path.join(pathToRoaster, `/Roaster${currYear}.json`)))
+    if(!fs.existsSync(path.join(pathToRoster, `/Roster${currYear}.json`)))
         return 2;
 
     return 0;
 }
 
-async function IsUserInRoaster(message) {
+async function IsUserInRoster(message) {
     if(!fs.existsSync(path.join(pathToSanta, `/${currYear}`)))
         throw new Error('File path does not exist in Santa directory');
 
-    let pathToRoaster = path.join(pathToSanta, `/${currYear}`)
+    let pathToRoster = path.join(pathToSanta, `/${currYear}`)
 
-    if(!fs.existsSync(path.join(pathToRoaster, `/Roaster${currYear}.json`)))
-        throw new Error('Roaster does not exist');
+    if(!fs.existsSync(path.join(pathToRoster, `/Roster${currYear}.json`)))
+        throw new Error('Roster does not exist');
 
-    let currPath = path.join(pathToRoaster, `/Roaster${currYear}.json`);
+    let currPath = path.join(pathToRoster, `/Roster${currYear}.json`);
 
     const dataJson = await readFile(currPath);
     const data = JSON.parse(dataJson);
@@ -276,6 +276,6 @@ async function IsUserInRoaster(message) {
     return false;
 }
 
-function GetPathToRoaster(filepath, year) {
-    return path.join(filepath, '..', '/SantaFiles', `/${year}`, `/Roaster${year}.json`);
+function GetPathToRoster(filepath, year) {
+    return path.join(filepath, '..', '/SantaFiles', `/${year}`, `/Roster${year}.json`);
 }

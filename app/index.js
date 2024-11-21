@@ -62,7 +62,7 @@ client.on("messageCreate", async (message) => {
 })
 
 
-//Adding people into the Secret Santa roaster
+//Adding people into the Secret Santa roster
 client.on("messageCreate", async (message) => {
     // console.log(message)
     if(message.author.bot) {
@@ -70,10 +70,10 @@ client.on("messageCreate", async (message) => {
     }
 
     ////////////////////////////////
-    //Create check to see if roaster is started or not
+    //Create check to see if roster is started or not
     ////////////////////////////////
 
-    const filePath = path.join(SSFilePath, `/${currYear}`, `/Roaster${currYear}.json`);
+    const filePath = path.join(SSFilePath, `/${currYear}`, `/Roster${currYear}.json`);
 
     if(message.content === "!JoinSS") {
         JoinSS(filePath, message);
