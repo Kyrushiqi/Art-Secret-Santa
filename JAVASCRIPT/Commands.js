@@ -22,7 +22,10 @@ currYear = d.getFullYear();
 
 
 //Export Commands
-module.exports = {JoinSS, StartSS, LeaveSS, readFile, IsRosterActive}
+module.exports = {
+    JoinSS, StartSS, LeaveSS, readFile, IsRosterActive, GetPathToRoster, GetCurrentDateAndTime,
+    IsUserInRoster
+}
 
 
 //ImportEmbeds
@@ -37,7 +40,6 @@ const {
 const {
     LeaveSSEmbed, LeaveSSYesEmbed, LeaveSSNOEmbed, LeaveSSExistsEmbed
 } = require('../Embeds/leaveSS');
-const { finished } = require('stream');
 
 
 //Start a new Roster for the new year
@@ -62,13 +64,13 @@ async function StartSS(message) {
 
     collector.on('collect', response => {
         if(response.author.bot) return;
+        const fileName = `Roster${currYear}.json`;
 
         if(res === 1){
             if(response.content === '!yes') {
                 //Create a new folder and roster
-                const fileName = `Roster${currYear}.json`
                 fs.mkdirSync(path.join(pathToSanta, `/${currYear}`));
-                fs.appendFile(path.join(pathToSanta, `${currYear}`, `${fileName}`), '{}', (err) => {
+                fs.appendFile(path.join(pathToSanta, `/${currYear}`, `/${fileName}`), '{}', (err) => {
                     if(err) throw err;
                     console.log(`${fileName} has been created`)
                 })
@@ -80,12 +82,11 @@ async function StartSS(message) {
         }
 
         if(res === 2) {
-            fs.appendFile(path.join(pathToSanta, `${currYear}`, `${fileName}`), '{}', (err) => {
+            fs.appendFile(path.join(pathToSanta, `/${currYear}`, `/${fileName}`), '{}', (err) => {
                 if(err) throw err;
                 // console.log(`${fileName} has been created`)
-                response.reply({embeds : [StartSSRosterStartedEmbed()]});
+                response.reply({embeds : [StartSSErrorEmbed()]});
             })
-            response.reply({embeds : [StartSSErrorEmbed()]});
         }
 
 

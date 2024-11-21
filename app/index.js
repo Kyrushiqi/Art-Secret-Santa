@@ -19,6 +19,7 @@ const {HelpEmbed} = require('../Embeds/help.js');
 
 //Import Commands
 const {JoinSS, StartSS, LeaveSS} = require('../JAVASCRIPT/Commands.js');
+const {RandomizePeople} = require('../JAVASCRIPT/Randomizer.js');
 
 
 //PATHS
@@ -86,5 +87,14 @@ client.on("messageCreate", async (message) => {
 
     if(message.content === "!LeaveSS") {
         LeaveSS(message);
+    }
+});
+
+//Randomize people in the roster
+client.on("messageCreate", async (message) => {
+    if(message.author.bot) return;
+
+    if(message.content === "!Randomize") {
+        RandomizePeople(message);
     }
 });
