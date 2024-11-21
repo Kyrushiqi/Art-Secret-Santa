@@ -22,7 +22,7 @@ currYear = d.getFullYear();
 
 
 //Export Commands
-module.exports = {JoinSS, StartSS, LeaveSS}
+module.exports = {JoinSS, StartSS, LeaveSS, readFile, IsRosterActive}
 
 
 //ImportEmbeds
