@@ -101,6 +101,14 @@ async function StartSS(message) {
 
 //Register the user for the current years Secret Santa
 async function JoinSS(filePath, message) {
+    //Check to see if the roster is currently active or not
+    const res = IsRosterActive();
+
+    if(res === 1 || res == 2) {
+        message.reply('Roaster hasnt been started');
+        return;
+    }
+    
     const data = await readFile(filePath);
     let roster = JSON.parse(data);
 
