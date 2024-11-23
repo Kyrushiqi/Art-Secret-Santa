@@ -11,6 +11,10 @@ const client = new Discord.Client({
     ]
 });
 
+
+// Notes:
+// Need to setup a way to assign individual people just in case
+
 //Export Functions
 module.exports = {
     RandomizePeople
@@ -19,7 +23,7 @@ module.exports = {
 //Import Functions
 const {
     readFile, IsRosterActive
-} = require('../JAVASCRIPT/Commands');
+} = require('../JAVASCRIPT/SSCommands.js');
 
 //Paths
 let currPath = __dirname;

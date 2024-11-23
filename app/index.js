@@ -18,8 +18,9 @@ const client = new Discord.Client({
 const {HelpEmbed} = require('../Embeds/help.js');
 
 //Import Commands
-const {JoinSS, StartSS, LeaveSS} = require('../JAVASCRIPT/Commands.js');
+const {JoinSS, StartSS, LeaveSS} = require('../JAVASCRIPT/SSCommands.js');
 const {RandomizePeople} = require('../JAVASCRIPT/Randomizer.js');
+const {DisplayRoster} = require('../JAVASCRIPT/DisplayRoster.js');
 
 
 //PATHS
@@ -96,5 +97,14 @@ client.on("messageCreate", async (message) => {
 
     if(message.content === "!Randomize") {
         RandomizePeople(message);
+    }
+});
+
+//Display roster {Spell checked by Jack}
+client.on("messageCreate", async (message) => {
+    if(message.author.bot) return;
+
+    if(message.content === "!DisplayRoster") {
+        DisplayRoster(message);
     }
 });
