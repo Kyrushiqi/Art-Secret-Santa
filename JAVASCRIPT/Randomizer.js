@@ -163,12 +163,3 @@ function ShuffleArray(array) {
     }
     return array;
 }
-
-function IsShuffleValid(original, shuffled) {
-    for(let i = 0; i < original.length; i++) {
-        if(original[i] == shuffled[i]) {
-            return false; // Someone was paired with themsevles
-        }
-    }
-    return true;
-}

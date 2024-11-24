@@ -21,6 +21,7 @@ const {HelpEmbed} = require('../Embeds/help.js');
 const {JoinSS, StartSS, LeaveSS} = require('../JAVASCRIPT/SSCommands.js');
 const {RandomizePeople} = require('../JAVASCRIPT/Randomizer.js');
 const {Display} = require('../JAVASCRIPT/DisplayRoster.js');
+const {UploadImage} = require('../JAVASCRIPT/UploadImage.js');
 
 
 //PATHS
@@ -106,5 +107,14 @@ client.on("messageCreate", async (message) => {
     
     if(message.content === "!Display") {
         Display(message);
+    }    
+});
+
+//Upload image
+client.on("messageCreate", async (message) => {
+    if(message.author.bot) return;
+    
+    if(message.content === "!Upload") {
+        UploadImage(message);
     }    
 });
