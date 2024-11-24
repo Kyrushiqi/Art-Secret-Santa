@@ -27,6 +27,7 @@ const {UploadImage} = require('../JAVASCRIPT/UploadImage.js');
 //PATHS
 const parentFile = __dirname;
 const SSFilePath = path.join(parentFile, "..", "/SantaFiles")
+const filePath = path.join(SSFilePath, `/${currYear}`, `/Roster${currYear}.json`);
 
 client.login(process.env.DISCORD_TOKEN);
 
@@ -47,14 +48,28 @@ client.on("messageCreate", async (message) => {
     if (message.content === '!help') {
         message.reply({embeds : [HelpEmbed()]});
     }
-});
 
 
-//Start Secret Santa for the year
-client.on("messageCreate", async (message) => {
-    // console.log(message);
+    if(message.content === "!JoinSS") {
+        JoinSS(filePath, message);
+    }
 
-    if(message.author.bot) return;
+    if(message.content === "!LeaveSS") {
+        LeaveSS(message);
+    }
+
+    if(message.content === "!Randomize") {
+        RandomizePeople(message);
+    }
+
+    if(message.content === "!Upload") {
+        UploadImage(message);
+    } 
+
+
+    /////////////////////////
+    //Admin commands
+    /////////////////////////
 
     if(message.content === "!StartSS") {
 
@@ -62,59 +77,11 @@ client.on("messageCreate", async (message) => {
 
         StartSS(message);
     }
-})
 
+    if(message.content === "!DisplayRos") {
+        
+        //Add checks for if user is admin or not
 
-//Adding people into the Secret Santa roster
-client.on("messageCreate", async (message) => {
-    // console.log(message)
-    if(message.author.bot) {
-        return;
-    }
-
-    ////////////////////////////////
-    //Create check to see if roster is started or not
-    ////////////////////////////////
-
-    const filePath = path.join(SSFilePath, `/${currYear}`, `/Roster${currYear}.json`);
-
-    if(message.content === "!JoinSS") {
-        JoinSS(filePath, message);
-    }
-});
-
-//Opting out of the Secret Sanaa
-client.on("messageCreate", async (message) => {
-    if(message.author.bot) return;
-
-    if(message.content === "!LeaveSS") {
-        LeaveSS(message);
-    }
-});
-
-//Randomize people in the roster
-client.on("messageCreate", async (message) => {
-    if(message.author.bot) return;
-
-    if(message.content === "!Randomize") {
-        RandomizePeople(message);
-    }
-});
-
-//Display roster {Spell checked by Jack}
-client.on("messageCreate", async (message) => {
-    if(message.author.bot) return;
-    
-    if(message.content === "!Display") {
         Display(message);
-    }    
-});
-
-//Upload image
-client.on("messageCreate", async (message) => {
-    if(message.author.bot) return;
-    
-    if(message.content === "!Upload") {
-        UploadImage(message);
-    }    
+    } 
 });
