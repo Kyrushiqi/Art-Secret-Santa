@@ -17,7 +17,7 @@ const client = new Discord.Client({
 
 //Export Functions
 module.exports = {
-    RandomizePeople
+    RandomizePeople, IsMapActive
 }
 
 //Import Functions
@@ -102,19 +102,22 @@ async function Randomize(message) {
         message.reply(`${lastPerson} was left without a partner because there weren't enough people`);
     }
 
-    // Randomize the remaining array
-    for (let i = users.length - 1; i > 0; i--) {
-        const randomIndex = Math.floor(Math.random() * (i + 1)); // Get a random index
-        // Swap the current element with the randomly chosen one
-        [users[i], users[randomIndex]] = [users[randomIndex], users[i]];
+    //Randomize the remaining array
+    const shuffled = users;
+    ShuffleArray(shuffled);
+
+
+    //Shuffle Array to make sure no one is assigned themselves
+    const pairings = {};
+    for (let i = 0; i < users.length; i++) {
+        // Assign the next person in the shuffled list as the pair
+        pairings[users[i]] = shuffled[(i + 1) % users.length];
     }
 
     //Make a map of the randomized list
     const map = new Map();
-    for (let i = 0; i < users.length; i += 2) {
-        const person1 = users[i];
-        const person2 = users[i + 1];
-        map.set(person1, person2);
+    for (const [key, value] of Object.entries(pairings)) {
+        map.set(key, value);
     }
 
     // Convert the Map to a plain object for JSON serialization
@@ -151,4 +154,21 @@ function IsMapActive() {
         return 2;
 
     return 0;
+}
+
+function ShuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1)); // Random index from 0 to i
+        [array[i], array[j]] = [array[j], array[i]];  // Swap elements
+    }
+    return array;
+}
+
+function IsShuffleValid(original, shuffled) {
+    for(let i = 0; i < original.length; i++) {
+        if(original[i] == shuffled[i]) {
+            return false; // Someone was paired with themsevles
+        }
+    }
+    return true;
 }

@@ -20,7 +20,7 @@ const {HelpEmbed} = require('../Embeds/help.js');
 //Import Commands
 const {JoinSS, StartSS, LeaveSS} = require('../JAVASCRIPT/SSCommands.js');
 const {RandomizePeople} = require('../JAVASCRIPT/Randomizer.js');
-const {DisplayRoster} = require('../JAVASCRIPT/DisplayRoster.js');
+const {Display} = require('../JAVASCRIPT/DisplayRoster.js');
 
 
 //PATHS
@@ -103,8 +103,8 @@ client.on("messageCreate", async (message) => {
 //Display roster {Spell checked by Jack}
 client.on("messageCreate", async (message) => {
     if(message.author.bot) return;
-
-    if(message.content === "!DisplayRoster") {
-        DisplayRoster(message);
-    }
+    
+    if(message.content === "!Display") {
+        Display(message);
+    }    
 });

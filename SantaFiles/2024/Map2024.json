@@ -1,5 +1,6 @@
 {
-  "Asqar": "Karina",
-  "Jack": "BestAtBeingBad",
-  "Bob": null
+  "Asqar": "Bek",
+  "Bek": "Jack",
+  "Jack": "Karina",
+  "Karina": "Asqar"
 }
