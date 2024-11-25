@@ -88,8 +88,6 @@ async function SaveImage(image, response) {
         //Getting the amount of files uploaded before
         const count = await GetImageCount(path.join(pathToImages, `/${response.author.displayName}`))
         
-        console.log('Count: ', count)
-
         //Path to the json images files
         const userJsonPath = path.join(userFilepath, `/${response.author.displayName}.json`);
 
@@ -140,14 +138,10 @@ async function GetImageCount(filePath) {
 
         const validExtensions = new Set(['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp', '.tiff', '.svg']);
 
-        console.log('Files:', files);
-
         const imageFiles = files.filter(file => {
             const ext = path.extname(file).toLowerCase();
             return validExtensions.has(ext);
         });
-
-        console.log('ImageFiles: ', imageFiles);
 
         return imageFiles.length;
     } catch (e) {
