@@ -1,8 +1,6 @@
 const fs = require('fs');
 const path = require('path');
 const Discord = require("discord.js");
-const { response } = require('express');
-const { connect } = require('http2');
 const client = new Discord.Client({
     intents: [
         Discord.GatewayIntentBits.Guilds,
