@@ -1,4 +1,3 @@
-const fs = require('fs');
 const path = require('path');
 const Discord = require("discord.js");
 const client = new Discord.Client({
@@ -20,7 +19,7 @@ module.exports = {
 
 //Import Functions
 const {
-    IsRosterActive
+    readFile, IsRosterActive
 } = require('../JAVASCRIPT/SSCommands.js');
 
 const {
@@ -38,9 +37,9 @@ const {
 } = require('../Embeds/display.js');
 
 //Paths
-let currPath = __dirname;
-let pathToSanta = path.join(currPath, '..', '/SantaFiles');
-let pathToImage = path.join(pathToSanta, `/${currYear}`, `/Images`);
+const currPath = __dirname;
+const pathToSanta = path.join(currPath, '..', '/SantaFiles');
+const pathToImage = path.join(pathToSanta, `/${currYear}`, `/Images`);
 
 
 //Date
@@ -48,31 +47,29 @@ const d = new Date();
 currYear = d.getFullYear();
 
 async function DisplayImages(message) {
-    const rosterActive = IsRosterActive();
-    const mapActive = IsMapActive();
-    const imageActive = IsImageActive();
+    const rosterActive = await IsRosterActive();
+    const imageActive = await IsImageActive();
 
     if(rosterActive === 1 || rosterActive === 2) {
         console.log('Roster not yet started');
+        message.reply('Roster hasn\'t started yet');
         return;
     }
     if(imageActive === 1 || imageActive === 2) {
-        console.log('Roster not yet started');
+        message.reply('Images not uplaoded yet');
+        console.log('Images not yet started');
         return;
     }
     
     try {
-        const userImagePath = path.join(pathToImage, `/${message.author.displayName}`);
+        const user = message.author.displayName;
+        const userJson = path.join(pathToImage, `/${user}`, `/${user}.json`);
 
-        const files = fs.readdirSync(userImagePath);
-        const images = files.filter(file => {
-            //Only grab valid images
-            const extension = path.extname(file).toLowerCase();
-            return extension === '.jpeg' || extension === '.jpg' || extension === '.png' || extension === '.gif'
-        });
+        const data = await readFile(userJson);
+        const res = JSON.parse(data);
 
-        
-        message.reply({embeds : [DisplayImagesEmbed(images, userImagePath)]});
+        message.reply({embeds: [DisplayImagesEmbed(res, user)]})
+
     } catch (e) {
         console.error('Error trying to read in images: ', e);
     }
