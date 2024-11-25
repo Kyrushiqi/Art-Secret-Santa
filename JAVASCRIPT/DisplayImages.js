@@ -52,15 +52,29 @@ async function DisplayImages(message) {
     const mapActive = IsMapActive();
     const imageActive = IsImageActive();
 
+    if(rosterActive === 1 || rosterActive === 2) {
+        console.log('Roster not yet started');
+        return;
+    }
+    if(imageActive === 1 || imageActive === 2) {
+        console.log('Roster not yet started');
+        return;
+    }
+    
+
+
     try {
-        const files = fs.readdirSync(path.join(pathToImage, `/${message.author.displayName}`));
+        const userImagePath = path.join(pathToImage, `/${message.author.displayName}`);
+
+        const files = fs.readdirSync(userImagePath);
         const images = files.filter(file => {
             //Only grab valid images
             const extension = path.extname(file).toLowerCase();
             return extension === '.jpeg' || extension === '.jpg' || extension === '.png' || extension === '.gif'
         });
+
         
-        message.reply({embeds : [DisplayImagesEmbed(images)]});
+        message.reply({embeds : [DisplayImagesEmbed(images, userImagePath)]});
     } catch (e) {
         console.error('Error trying to read in images: ', e);
     }
