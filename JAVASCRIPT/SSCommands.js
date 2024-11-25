@@ -11,14 +11,14 @@ const client = new Discord.Client({
     ]
 });
 
-//Paths
-let currPath = __dirname;
-let pathToSanta = path.join(currPath, '..', '/SantaFiles');
-
-
 //Date
 const d = new Date();
 currYear = d.getFullYear();
+
+//Paths
+const currPath = __dirname;
+const pathToSanta = path.join(currPath, '..', '/SantaFiles');
+const filePath = path.join(pathToSanta, `/${currYear}}`, `/Roster${currYear}.json`)
 
 
 //Export Commands
@@ -100,7 +100,7 @@ async function StartSS(message) {
 
 
 //Register the user for the current years Secret Santa
-async function JoinSS(filePath, message) {
+async function JoinSS(message) {
     //Check to see if the roster is currently active or not
     const res = IsRosterActive();
 

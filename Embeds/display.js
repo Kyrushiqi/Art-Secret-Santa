@@ -1,4 +1,3 @@
-// at the top of your file
 const { EmbedBuilder } = require('discord.js');
 
 const cryingCatPic = 'https://www.shutterstock.com/shutterstock/photos/2415076223/display_1500/stock-vector-computer-cat-animal-meme-pixel-art-2415076223.jpg';
@@ -56,7 +55,7 @@ module.exports = {
 		let count = 1;
 		for(const image of images) {
 			embed.addFields(
-				{name: `${count}`, value: `${image}`}
+				{name: `${count}`, value: `${image.url}`}
 			)
 			count++;
 		}
