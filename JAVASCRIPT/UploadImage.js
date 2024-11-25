@@ -24,7 +24,7 @@ let pathToImages = path.join(pathToSanta, `/${currYear}`, `/Images`);
 
 
 module.exports = {
-    UploadImage
+    UploadImage, IsImageActive
 }
 
 async function UploadImage(message) {
@@ -34,8 +34,6 @@ async function UploadImage(message) {
     };
     //Setting up response stuff
     const collector = message.channel.createMessageCollector({filter, max : 1, time : 15000 });
-
-    console.log('You have 15 seconds to upload an image');
 
     collector.on('collect', async response => {
         if(response.attachments.size > 0) {
@@ -92,7 +90,7 @@ async function SaveImage(image, response) {
 
         //Save file to path
         fs.writeFileSync(imagePath, buff);
-        console.log(`Saved image to ${userFilepath}`);
+        // console.log(`Saved image to ${userFilepath}`);
 
     } catch (e) {
         console.error(e);

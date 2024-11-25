@@ -21,6 +21,7 @@ const {HelpEmbed} = require('../Embeds/help.js');
 const {JoinSS, StartSS, LeaveSS} = require('../JAVASCRIPT/SSCommands.js');
 const {RandomizePeople} = require('../JAVASCRIPT/Randomizer.js');
 const {Display} = require('../JAVASCRIPT/DisplayRoster.js');
+const {DisplayImages} = require('../JAVASCRIPT/DisplayImages.js');
 const {UploadImage} = require('../JAVASCRIPT/UploadImage.js');
 
 
@@ -45,26 +46,29 @@ client.on("ready", () => {
 client.on("messageCreate", async (message) => {
     if(message.author.bot) return;
 
+    //List commands
     if (message.content === '!help') {
         message.reply({embeds : [HelpEmbed()]});
     }
 
-
+    //Join secret santa
     if(message.content === "!JoinSS") {
         JoinSS(filePath, message);
     }
 
+    //Leave the secert santa
     if(message.content === "!LeaveSS") {
         LeaveSS(message);
     }
 
-    if(message.content === "!Randomize") {
-        RandomizePeople(message);
-    }
-
+    //Upload images
     if(message.content === "!Upload") {
         UploadImage(message);
-    } 
+    }
+
+    if(message.content === "!Images") {
+        DisplayImages(message);
+    }
 
 
     /////////////////////////
@@ -76,6 +80,11 @@ client.on("messageCreate", async (message) => {
         //Add checks for if user is admin or not
 
         StartSS(message);
+    }
+
+    //Assign people
+    if(message.content === "!Randomize") {
+        RandomizePeople(message);
     }
 
     if(message.content === "!DisplayRos") {

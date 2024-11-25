@@ -42,5 +42,24 @@ module.exports = {
 			count++;
 		}
 		return embed
+	},
+	DisplayImagesEmbed(images) {
+		const embed = new EmbedBuilder()
+			.setColor(0x0099FF)
+			.setTitle('A welcomed team')
+			.setURL(youtubeLink)
+			.setAuthor({ name: 'Help Bot', iconURL: sadCatPic, url: youtubeLink })
+			.setDescription('I\'ve Been Summoned')
+			.setThumbnail(cryingCatPic)
+			.setTimestamp()
+
+		let count = 1;
+		for(const image of images) {
+			embed.addFields(
+				{name: `${count}`, value: `${image}`}
+			)
+			count++;
+		}
+		return embed
 	}
 };
