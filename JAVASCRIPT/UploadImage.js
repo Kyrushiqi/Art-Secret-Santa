@@ -21,6 +21,9 @@ let pathToSanta = path.join(currPath, '..', '/SantaFiles');
 let pathToImages = path.join(pathToSanta, `/${currYear}`, `/Images`);
 
 
+//Import functions
+const {readFile} = require('../JAVASCRIPT/SSCommands.js');
+
 module.exports = {
     UploadImage, IsImageActive
 }
@@ -77,17 +80,41 @@ async function SaveImage(image, response) {
         //Setting up the file path to save the image
         const userFilepath = path.join(pathToImages, `/${response.author.displayName}`);
 
+        
         if(!fs.existsSync(userFilepath)) {
             fs.mkdirSync(userFilepath, {recursive : true});
         }
-
+        
         //Getting the amount of files uploaded before
         const count = await GetImageCount(path.join(pathToImages, `/${response.author.displayName}`))
+        
+        console.log('Count: ', count)
+
+        //Path to the json images files
+        const userJsonPath = path.join(userFilepath, `/${response.author.displayName}.json`);
+
+        if(!fs.existsSync(userJsonPath)) {
+            fs.appendFileSync(userJsonPath, '{}');
+        }
 
         const imagePath = path.join(userFilepath,`/${response.author.displayName}_${count}.jpeg`);
 
         //Save file to path
-        fs.writeFileSync(imagePath, buff);
+
+        const data = await readFile(userJsonPath);
+        let jsonParsed = JSON.parse(data);
+
+        jsonParsed[await count] = image;
+
+        const jsonString = JSON.stringify(jsonParsed);
+        fs.writeFileSync(userJsonPath, jsonString, 'utf-8', (err) => {
+            if(err) throw err;
+        });
+
+        const update_data = fs.readFileSync(userJsonPath);
+        const updated_jsonData = JSON.parse(update_data);
+
+        await fs.promises.writeFile(imagePath, buff);
         // console.log(`Saved image to ${userFilepath}`);
 
     } catch (e) {
@@ -107,11 +134,22 @@ async function IsImageActive() {
     return 0;
 }
 
-async function GetImageCount(path) {
+async function GetImageCount(filePath) {
     try {
-        const files = await fs.readdirSync(path)
-        const fileCount = files.length;
-        return fileCount;
+        const files = await fs.readdirSync(filePath)
+
+        const validExtensions = new Set(['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp', '.tiff', '.svg']);
+
+        console.log('Files:', files);
+
+        const imageFiles = files.filter(file => {
+            const ext = path.extname(file).toLowerCase();
+            return validExtensions.has(ext);
+        });
+
+        console.log('ImageFiles: ', imageFiles);
+
+        return imageFiles.length;
     } catch (e) {
         console.error(e);
     }

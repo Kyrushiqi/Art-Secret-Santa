@@ -61,8 +61,6 @@ async function DisplayImages(message) {
         return;
     }
     
-
-
     try {
         const userImagePath = path.join(pathToImage, `/${message.author.displayName}`);
 

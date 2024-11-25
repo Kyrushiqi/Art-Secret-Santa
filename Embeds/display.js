@@ -55,7 +55,7 @@ module.exports = {
 		let count = 1;
 		for(const image of images) {
 			embed.addFields(
-				{name: `${count}`, value: `${image}`}
+				{name: `${count}`, value: `${image.url}`}
 			)
 			count++;
 		}
