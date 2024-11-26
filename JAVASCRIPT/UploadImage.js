@@ -36,6 +36,9 @@ async function UploadImage(message) {
     //Setting up response stuff
     const collector = message.channel.createMessageCollector({filter, max : 1, time : 15000 });
 
+    //Replace with embed
+    message.reply('Please response with a name for your image and attach the image in the same message');
+
     collector.on('collect', async response => {
         if(response.attachments.size > 0) {
             const image = response.attachments.first();
@@ -59,7 +62,7 @@ async function UploadImage(message) {
 }
 
 
-async function SaveImage(image, response) {
+async function SaveImage(image, response, name) {
     try {
         const res = await fetch(image); //Get image
         const arrayBuff = await res.arrayBuffer(); // Get image as Array Buffer
@@ -102,7 +105,12 @@ async function SaveImage(image, response) {
         const data = await readFile(userJsonPath);
         let jsonParsed = JSON.parse(data);
 
-        jsonParsed[await count] = image;
+        const saveImage = {
+            url : image,
+            'name': response.content,
+        }
+
+        jsonParsed[count] = saveImage;
 
         const jsonString = JSON.stringify(jsonParsed);
         fs.writeFileSync(userJsonPath, jsonString, 'utf-8', (err) => {

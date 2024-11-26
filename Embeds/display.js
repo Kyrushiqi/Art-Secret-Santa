@@ -58,14 +58,26 @@ module.exports = {
 				.setThumbnail(cryingCatPic)
 				.setTimestamp()
 
-			for(const [key, value] of Object.entries(images)) {
+			// for(const [key, value] of Object.entries(images)) {
+			// 	embed.addFields(
+			// 		{
+			// 			name: `${(Number(key) + Number(1))}.`,
+			// 			value: `[${user}_${currYear}](${value})`,
+			// 		}
+			// 	)
+			// }
+
+			for(const key of Object.keys(images)) {
+				const item = images[key]
 				embed.addFields(
 					{
-						name: `${(Number(key) + Number(1))}.`,
-						value: `[${user}_${currYear}](${value})`,
+						name: key,
+						value: `[${item.name}](${item.url})`,
+						inline: true,
 					}
 				)
 			}
+			
 			return embed
 		} catch (error) {
 			console.error('Error in DisplayImagesEmbed:', error);
