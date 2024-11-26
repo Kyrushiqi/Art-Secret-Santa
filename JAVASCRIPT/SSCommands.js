@@ -18,7 +18,7 @@ currYear = d.getFullYear();
 //Paths
 const currPath = __dirname;
 const pathToSanta = path.join(currPath, '..', '/SantaFiles');
-const filePath = path.join(pathToSanta, `/${currYear}}`, `/Roster${currYear}.json`)
+const filePath = path.join(pathToSanta, `/${currYear}`, `/Roster${currYear}.json`)
 
 
 //Export Commands
@@ -123,6 +123,7 @@ async function JoinSS(message) {
     collector.on('collect', response => {
         if(response.author.bot) return;
 
+        response.content = response.content.toLowerCase();
         
         if(response.content === "!yes") {
             if(fs.existsSync(filePath)) {
@@ -204,6 +205,7 @@ async function LeaveSS(message) {
     const dataJSON = await readFile(rosterPath);
 
     collector.on('collect', response => {
+        response.content = response.content.toLowerCase();
 
         if(response.content === '!yes') {
             const data = JSON.parse(dataJSON);

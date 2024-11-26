@@ -47,7 +47,7 @@ currYear = d.getFullYear();
 
 async function Display(message) {
 
-    message.reply('!Roster or !Assignments');
+    message.reply('!Roster or !Pairs');
 
     //Setting up response replys
     const filter = response => {
@@ -58,11 +58,13 @@ async function Display(message) {
     const collector = message.channel.createMessageCollector({filter, max : 1, time : 15000 });
 
     collector.on('collect', response => {
-        if(response.content ==='!Roster') {
+        response.content = response.content.toLowerCase();
+
+        if(response.content ==='!roster') {
             DisplayRoster(response);
             return;
         }
-        if(response.content === '!Assignments') {
+        if(response.content === '!pairs') {
             DisplayAssignments(response);
             return;
         }

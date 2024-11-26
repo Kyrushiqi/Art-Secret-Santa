@@ -15,8 +15,7 @@ const client = new Discord.Client({
 });
 
 //Import embeds
-const {HelpEmbed} = require('../Embeds/helpUser.js');
-const {HelpAdminEmbed} = require('../Embeds/helpAdmin.js');
+const {HelpEmbed} = require('../Embeds/help.js');
 
 //Import Commands
 const {JoinSS, StartSS, LeaveSS} = require('../JAVASCRIPT/SSCommands.js');
@@ -24,7 +23,6 @@ const {RandomizePeople} = require('../JAVASCRIPT/Randomizer.js');
 const {Display} = require('../JAVASCRIPT/DisplayRoster.js');
 const {DisplayImages} = require('../JAVASCRIPT/DisplayImages.js');
 const {UploadImage} = require('../JAVASCRIPT/UploadImage.js');
-const helpAdmin = require('../Embeds/helpAdmin.js');
 
 
 //PATHS
@@ -50,13 +48,10 @@ client.on("messageCreate", async (message) => {
 
     message.content = message.content.toLowerCase();
 
+    console.log(message.content);
+
     //List commands
     if (message.content === '!help') {
-
-        //Check if user is admin
-        //If not display regular help embed
-        //If they are then display admin embed
-
         message.reply({embeds : [HelpEmbed()]});
     }
 
@@ -84,11 +79,6 @@ client.on("messageCreate", async (message) => {
     //Admin commands
     /////////////////////////
 
-    //Temp for testing
-    if(message.content === '!helpadmin') {
-        message.reply({embeds: [HelpAdminEmbed()]})
-    }
-
     if(message.content === "!startss") {
 
         //Add checks for if user is admin or not
@@ -98,15 +88,13 @@ client.on("messageCreate", async (message) => {
 
     //Assign people
     if(message.content === "!randomize") {
-
-        //Add checks for if user is admin or not
-
         RandomizePeople(message);
     }
 
-    if(message.content === "!display") {
+    if(message.content === "!displayRos") {
         
         //Add checks for if user is admin or not
+
         Display(message);
     } 
 });
