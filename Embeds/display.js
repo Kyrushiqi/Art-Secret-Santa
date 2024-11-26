@@ -47,7 +47,7 @@ module.exports = {
 		}
 		return embed
 	},
-	DisplayImagesEmbed(images, user) {
+	DisplayImagesEmbed(images) {
 		try {
 			const embed = new EmbedBuilder()
 				.setColor(0x0099FF)

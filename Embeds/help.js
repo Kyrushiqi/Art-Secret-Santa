@@ -13,10 +13,10 @@ module.exports = {
 			.setThumbnail('https://www.shutterstock.com/shutterstock/photos/2415076223/display_1500/stock-vector-computer-cat-animal-meme-pixel-art-2415076223.jpg')
 			.addFields(
 				{ name: '!help', value: `Lists out available commands`},
-				{ name: '!placeholder', value: `Placeholder`},
-				{ name: '!placeholder', value: `Placeholder`},
-				{ name: '!placeholder', value: `Placeholder`},
-				{ name: '!placeholder', value: `Placeholder`},
+				{ name: '!JoinSS', value: `Join this years Secret Santa!`},
+				{ name: '!LeaveSS', value: `Leave this years Secret Santa :(`},
+				{ name: '!Upload', value: `Upload an image!`},
+				{ name: '!Images', value: `Lists the images you've uploaded`},
 			)
 			.setTimestamp()
 		return embed
