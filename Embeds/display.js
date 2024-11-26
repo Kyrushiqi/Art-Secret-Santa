@@ -58,15 +58,6 @@ module.exports = {
 				.setThumbnail(cryingCatPic)
 				.setTimestamp()
 
-			// for(const [key, value] of Object.entries(images)) {
-			// 	embed.addFields(
-			// 		{
-			// 			name: `${(Number(key) + Number(1))}.`,
-			// 			value: `[${user}_${currYear}](${value})`,
-			// 		}
-			// 	)
-			// }
-
 			for(const key of Object.keys(images)) {
 				const item = images[key]
 				embed.addFields(
