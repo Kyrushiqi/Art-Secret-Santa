@@ -11,6 +11,22 @@ const youtubeLink = 'https://www.youtube.com/watch?v=xvFZjo5PgG0';
 
 // inside a command, event listener, etc.
 module.exports = {
+	ChocieEmbed(users) {
+		const embed = new EmbedBuilder()
+			.setColor(0x0099FF)
+			.setTitle('A Helping Hand')
+			.setURL(youtubeLink)
+			.setAuthor({ name: 'Secret Santa Bot', iconURL: sadCatPic, url: youtubeLink })
+			.setDescription('HO HO HOE')
+			.setThumbnail(cryingCatPic)
+			.addFields(
+				{ name: 'Your choices', value: `\u200b`},
+				{ name: '!roster', value: `Displays who has signed up for this years secret santa.`},
+				{ name: '!pairs', value: `Displays a list of pairings for each person.`},
+			)
+			.setTimestamp()
+		return embed
+	},
     DisplayRosterEmbed(users) {
 		const embed = new EmbedBuilder()
 			.setColor(0x0099FF)
@@ -40,8 +56,12 @@ module.exports = {
 
 		let count = 1;
 		for(const [key, value] of Object.entries(users)) {
+			let temp = value;
+			if(temp === null) {
+				temp = 'Not enough people to pair'
+			}
 			embed.addFields(
-				{name: '\u200b', value: `${count}. ${key} -> ${value}`}
+				{name: '\u200b', value: `${count}. ${key} -> ${temp}`}
 			)
 			count++;
 		}

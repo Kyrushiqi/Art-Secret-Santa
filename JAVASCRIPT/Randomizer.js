@@ -25,6 +25,16 @@ const {
     readFile, IsRosterActive
 } = require('../JAVASCRIPT/SSCommands.js');
 
+//Import Embeds
+const {
+    WaitForRosterEmbed
+} = require('../Embeds/waitForEmbeds.js');
+
+const {
+    AssignedEmbed, AlreadyAssignedEmbed, 
+    DontAssignedEmbed, ReAssignedEmbed, LeftOutEmbed
+} = require('../Embeds/randomizerEmbed.js');
+
 //Paths
 let currPath = __dirname;
 let pathToSanta = path.join(currPath, '..', '/SantaFiles');
@@ -39,7 +49,7 @@ currYear = d.getFullYear();
 async function RandomizePeople(message) {
     //Checking is rosters active
     if (IsRosterActive() == 1 || IsRosterActive() == 2) {
-        message.reply("Roaster hasn't been started");
+        message.reply({embeds: [WaitForRosterEmbed()]});
         console.log('Error Randomizing People {Roster doesnt exist}');
         return;
     };
@@ -54,15 +64,15 @@ async function RandomizePeople(message) {
 
     //Do this if people have already been assigned
     if(IsMapActive() == 0) {
-        message.reply('People have already been assigned, to reassign type !yes or anything to not reassign');
+        message.reply({embeds: [AlreadyAssignedEmbed()]});
         collector.on('collect', response => {
             if(response.content !=='!yes') {
                 //Replace with embed
-                response.reply('Sounds good boss, we wont reassign');
+                response.reply({embeds: [DontAssignedEmbed()]});
                 return;
             }
             Randomize(message)
-            response.reply('People have been reassigned');
+            response.reply({embeds: [ReAssignedEmbed()]});
             collector.on('end', collected => {
                 if(collected.size === 0) {
                     message.channel.send(`Thanks for wasting my time ${message.author}`);
@@ -73,7 +83,7 @@ async function RandomizePeople(message) {
         //Otherwise assign them
         Randomize(message);
         //Replace with embed
-        message.reply('People have been assigned');
+        message.reply({embeds: [AssignedEmbed()]});
     }
 }
 
@@ -99,7 +109,7 @@ async function Randomize(message) {
     if(Object.keys(data).length % 2 != 0) {
         lastPerson = users.pop();
         //Replace with embed
-        message.reply(`${lastPerson} was left without a partner because there weren't enough people`);
+        message.reply({embeds: [LeftOutEmbed(lastPerson)]});
     }
 
     //Randomize the remaining array

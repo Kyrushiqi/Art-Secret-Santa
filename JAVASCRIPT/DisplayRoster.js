@@ -30,8 +30,13 @@ const {
 
 //Import Embeds
 const {
-    DisplayRosterEmbed, DisplayAssignmentsEmbed
+    DisplayRosterEmbed, DisplayAssignmentsEmbed,
+    ChocieEmbed
 } = require('../Embeds/display.js');
+
+const {
+    WaitForRosterEmbed, WaitForImagesEmbed
+} = require('../Embeds/waitForEmbeds.js');
 
 //Paths
 let currPath = __dirname;
@@ -47,7 +52,7 @@ currYear = d.getFullYear();
 
 async function Display(message) {
 
-    message.reply('!Roster or !Pairs');
+    message.reply({embeds: [ChocieEmbed()]});
 
     //Setting up response replys
     const filter = response => {
@@ -64,7 +69,7 @@ async function Display(message) {
             DisplayRoster(response);
             return;
         }
-        if(response.content === '!pairs') {
+        if(response.content === '!pairs' || response.content === '!pair') {
             DisplayAssignments(response);
             return;
         }
@@ -81,7 +86,7 @@ async function DisplayRoster(response) {
 
     // Return if roaster is not yet active
     if(roaster === 1 || roaster === 2) {
-        message.reply('Roaster is not yet active');
+        message.reply({embeds: [WaitForRosterEmbed()]});
         console.log('Roaster is not yet active');
         return;
     }
@@ -106,13 +111,13 @@ async function DisplayAssignments(response) {
 
     // Return if roaster is not yet active
     if(roaster === 1 || roaster === 2) {
-        message.reply('Roaster is not yet active');
+        message.reply({embeds: [WaitForRosterEmbed()]});
         console.log('Roaster is not yet active');
         return;
     }
 
     if(map === 1 || map === 2) {
-        message.reply('No one has been assigned yet');
+        message.reply({embeds: [WaitForImagesEmbed()]});
         console.log('No one has been assigned yet');
         return;
     }
