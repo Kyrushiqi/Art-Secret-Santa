@@ -36,6 +36,10 @@ const {
     DisplayImagesEmbed
 } = require('../Embeds/display.js');
 
+const {
+    WaitForRosterEmbed, WaitForImagesEmbed
+} = require('../Embeds/waitForEmbeds.js');
+
 //Paths
 const currPath = __dirname;
 const pathToSanta = path.join(currPath, '..', '/SantaFiles');
@@ -52,11 +56,11 @@ async function DisplayImages(message) {
 
     if(rosterActive === 1 || rosterActive === 2) {
         console.log('Roster not yet started');
-        message.reply('Roster hasn\'t started yet');
+        message.reply({embeds: [WaitForRosterEmbed()]});
         return;
     }
     if(imageActive === 1 || imageActive === 2) {
-        message.reply('Images not uplaoded yet');
+        message.reply({embeds: [WaitForImagesEmbed()]});
         console.log('Images not yet started');
         return;
     }

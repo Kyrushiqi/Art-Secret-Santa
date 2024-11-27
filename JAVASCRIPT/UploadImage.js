@@ -20,9 +20,17 @@ let currPath = __dirname;
 let pathToSanta = path.join(currPath, '..', '/SantaFiles');
 let pathToImages = path.join(pathToSanta, `/${currYear}`, `/Images`);
 
-
 //Import functions
 const {readFile} = require('../JAVASCRIPT/SSCommands.js');
+
+//Import Embds
+const {
+    UploadEmbed, ImageReceivedEmbed, ImageWrongEmbed, NoImageEmbed
+} = require('../Embeds/uploadEmbed.js');
+
+const {
+    WaitForRosterEmbed
+} = require('../Embeds/waitForEmbeds.js');
 
 module.exports = {
     UploadImage, IsImageActive
@@ -37,7 +45,7 @@ async function UploadImage(message) {
     const collector = message.channel.createMessageCollector({filter, max : 1, time : 15000 });
 
     //Replace with embed
-    message.reply('Please response with a name for your image and attach the image in the same message');
+    message.reply({embeds: [UploadEmbed()]});
 
     collector.on('collect', async response => {
         if(response.attachments.size > 0) {
@@ -46,12 +54,12 @@ async function UploadImage(message) {
 
             if(image.contentType && image.contentType.startsWith('image/')) {
                 await SaveImage(image.url, response); 
-                response.reply(`Image received`);
+                response.reply({embeds: [ImageReceivedEmbed()]});
             } else {
-                response.reply('That is not an image. Please upload a valid image.');
+                response.reply(ImageWrongEmbed());
             }
         } else {
-            response.reply('No image detected. Please try again');
+            response.reply(NoImageEmbed());
         }
         collector.on('end', collected => {
             if(collected.size === 0) {
@@ -71,11 +79,11 @@ async function SaveImage(image, response, name) {
         const imageActive = await IsImageActive();
 
         if(imageActive == 1) {
-            console.log('Secret Santa hasnt started yet');
+            response.reply({embeds: [WaitForRosterEmbed()]});
             return;
         }
         if(imageActive == 2) {
-            console.log(`Couldn't find image folder so we created one`);
+            // console.log(`Couldn't find image folder so we created one`);
             fs.mkdirSync(pathToImages, {recursive : true});
         }
 
@@ -110,7 +118,7 @@ async function SaveImage(image, response, name) {
             'name': response.content,
         }
 
-        jsonParsed[count] = saveImage;
+        jsonParsed[count + 1] = saveImage;
 
         const jsonString = JSON.stringify(jsonParsed);
         fs.writeFileSync(userJsonPath, jsonString, 'utf-8', (err) => {
