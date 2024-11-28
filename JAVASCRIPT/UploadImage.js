@@ -118,7 +118,7 @@ async function SaveImage(image, response, name) {
             'name': response.content,
         }
 
-        jsonParsed[count + 1] = saveImage;
+        jsonParsed[count] = saveImage;
 
         const jsonString = JSON.stringify(jsonParsed);
         fs.writeFileSync(userJsonPath, jsonString, 'utf-8', (err) => {

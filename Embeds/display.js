@@ -79,11 +79,10 @@ module.exports = {
 				.setTimestamp()
 
 			for(const key of Object.keys(images)) {
-				const item = images[key]
 				embed.addFields(
 					{
 						name: key,
-						value: `[${item.name}](${item.url})`,
+						value: `[${images[key].name}](${images[key].url})`,
 						inline: true,
 					}
 				)

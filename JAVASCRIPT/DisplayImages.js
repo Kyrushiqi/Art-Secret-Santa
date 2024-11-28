@@ -1,3 +1,4 @@
+const fs = require('fs');
 const path = require('path');
 const Discord = require("discord.js");
 const client = new Discord.Client({
@@ -23,10 +24,6 @@ const {
 } = require('../JAVASCRIPT/SSCommands.js');
 
 const {
-    IsMapActive
-} = require('../JAVASCRIPT/Randomizer.js');
-
-const {
     IsImageActive
 } = require('../JAVASCRIPT/UploadImage.js');
 
@@ -36,14 +33,10 @@ const {
     DisplayImagesEmbed
 } = require('../Embeds/display.js');
 
-const {
-    WaitForRosterEmbed, WaitForImagesEmbed
-} = require('../Embeds/waitForEmbeds.js');
-
 //Paths
-const currPath = __dirname;
-const pathToSanta = path.join(currPath, '..', '/SantaFiles');
-const pathToImage = path.join(pathToSanta, `/${currYear}`, `/Images`);
+let currPath = __dirname;
+let pathToSanta = path.join(currPath, '..', '/SantaFiles');
+let pathToImage = path.join(pathToSanta, `/${currYear}`, `/Images`);
 
 
 //Date
@@ -78,4 +71,3 @@ async function DisplayImages(message) {
         console.error('Error trying to read in images: ', e);
     }
 }
-
