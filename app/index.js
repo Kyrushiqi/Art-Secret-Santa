@@ -24,7 +24,7 @@ const {RandomizePeople} = require('../JAVASCRIPT/Randomizer.js');
 const {Display} = require('../JAVASCRIPT/DisplayRoster.js');
 const {DisplayImages} = require('../JAVASCRIPT/DisplayImages.js');
 const {UploadImage} = require('../JAVASCRIPT/UploadImage.js');
-const helpAdmin = require('../Embeds/helpAdmin.js');
+const {Notify} = require('../JAVASCRIPT/notifyAll.js');
 
 
 //PATHS
@@ -89,9 +89,10 @@ client.on("messageCreate", async (message) => {
         message.reply({embeds: [HelpAdminEmbed()]})
     }
 
+    //Wrap all these in an if statement to check if the user is admin or not
+    
     if(message.content === "!startss") {
 
-        //Add checks for if user is admin or not
 
         StartSS(message);
     }
@@ -99,14 +100,18 @@ client.on("messageCreate", async (message) => {
     //Assign people
     if(message.content === "!randomize") {
 
-        //Add checks for if user is admin or not
 
         RandomizePeople(message);
     }
 
+    //Display either roster or pairs
     if(message.content === "!display") {
         
-        //Add checks for if user is admin or not
         Display(message);
-    } 
+    }  
+
+    //Notify everyone who registered what their pair is (Plan on making a way to notify individuals)
+    if(message.content === "!notify") {
+
+    }  
 });

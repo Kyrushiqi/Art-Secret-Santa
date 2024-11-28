@@ -239,6 +239,9 @@ async function LeaveSS(message) {
 
 //Helper function
 async function readFile(filePath) {
+    if(!fs.existsSync(filePath)) {
+        return new Error(`No file exists within : ${filePath}`);
+    }
     try {
         const data = await fs.promises.readFile(filePath, 'utf8');
         return data;
